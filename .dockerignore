@@ -1,0 +1,15 @@
+.github
+.git
+*.md
+.vscode
+.gitignore
+Makefile
+docs
+.eslintcache
+.gocache
+**/node_modules
+*.tar.gz
+*.tar
+dist
+build.sh
+manage.sh
