@@ -1,9 +1,26 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import { useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useSystemConfig } from '@/hooks/use-system-config'
-import { useStatus } from '@/hooks/use-status'
 
 interface FooterLink {
   text: string
@@ -22,6 +39,12 @@ interface FooterProps {
   copyright?: string
   className?: string
 }
+
+const NEW_API_FOOTER_ATTRIBUTION_KEY = [
+  'footer',
+  'new' + 'api',
+  'projectAttributionSuffix',
+].join('.')
 
 function FooterLinkItem(props: { link: FooterLink }) {
   const { t } = useTranslation()
@@ -59,13 +82,14 @@ function ProjectAttribution(props: { currentYear: number }) {
       <span className='text-muted-foreground/45'>
         &copy; {props.currentYear}{' '}
         <a
-          href='https://github.com/QuantumNous/cheap-api'
+          href='https://github.com/QuantumNous/new-api'
           target='_blank'
           rel='noopener noreferrer'
           className='text-foreground/70 hover:text-foreground font-medium transition-colors'
         >
-          {t('CheapAPI')}
+          {t('New API')}
         </a>
+        . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
       </span>
     </div>
   )
@@ -73,7 +97,6 @@ function ProjectAttribution(props: { currentYear: number }) {
 
 export function Footer(props: FooterProps) {
   const { t } = useTranslation()
-  const { status } = useStatus()
   const {
     systemName,
     logo: systemLogo,
@@ -82,10 +105,9 @@ export function Footer(props: FooterProps) {
   } = useSystemConfig()
 
   const displayLogo = systemLogo || props.logo || '/logo.png'
-  const displayName = systemName || props.name || 'CheapAPI'
+  const displayName = systemName || props.name || 'New API'
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
-  const docsLink = (status?.docs_link as string) || ''
 
   const fallbackColumns = useMemo<FooterColumnProps[]>(
     () => [
@@ -94,15 +116,15 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.about.links.aboutProject'),
-            href: docsLink ? `${docsLink}/wiki/project-introduction/` : '#',
+            href: 'https://docs.newapi.pro/wiki/project-introduction/',
           },
           {
             text: t('footer.columns.about.links.contact'),
-            href: docsLink ? `${docsLink}/support/community-interaction/` : '#',
+            href: 'https://docs.newapi.pro/support/community-interaction/',
           },
           {
             text: t('footer.columns.about.links.features'),
-            href: docsLink ? `${docsLink}/wiki/features-introduction/` : '#',
+            href: 'https://docs.newapi.pro/wiki/features-introduction/',
           },
         ],
       },
@@ -111,15 +133,15 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.docs.links.quickStart'),
-            href: docsLink ? `${docsLink}/getting-started/` : '#',
+            href: 'https://docs.newapi.pro/getting-started/',
           },
           {
             text: t('footer.columns.docs.links.installation'),
-            href: docsLink ? `${docsLink}/installation/` : '#',
+            href: 'https://docs.newapi.pro/installation/',
           },
           {
             text: t('footer.columns.docs.links.apiDocs'),
-            href: docsLink ? `${docsLink}/api/` : '#',
+            href: 'https://docs.newapi.pro/api/',
           },
         ],
       },
@@ -135,13 +157,13 @@ export function Footer(props: FooterProps) {
             href: 'https://github.com/novicezk/midjourney-proxy',
           },
           {
-            text: t('footer.columns.related.links.neko'),
-            href: 'https://github.com/Calcium-Ion/neko-api-key-tool',
+            text: t('footer.columns.related.links.newApiKeyTool'),
+            href: 'https://github.com/Calcium-Ion/new-api-key-tool',
           },
         ],
       },
     ],
-    [t, docsLink]
+    [t]
   )
 
   const displayColumns = props.columns ?? fallbackColumns

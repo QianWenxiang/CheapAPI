@@ -3,7 +3,6 @@ package router
 import (
 	"embed"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/QuantumNous/new-api/common"
@@ -31,12 +30,6 @@ func SetWebRouter(router *gin.Engine, assets ThemeAssets) {
 	router.Use(middleware.GlobalWebRateLimit())
 	router.Use(middleware.Cache())
 	router.Use(static.Serve("/", themeFS))
-
-	// Serve user-uploaded files from /data/ directory
-	if _, err := os.Stat("/data"); err == nil {
-		router.Static("/data", "/data")
-	}
-
 	router.NoRoute(func(c *gin.Context) {
 		c.Set(middleware.RouteTagKey, "web")
 		if strings.HasPrefix(c.Request.RequestURI, "/v1") || strings.HasPrefix(c.Request.RequestURI, "/api") || strings.HasPrefix(c.Request.RequestURI, "/assets") {

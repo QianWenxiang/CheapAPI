@@ -164,10 +164,10 @@ When working on tiered/dynamic billing (expression-based pricing), you MUST read
 ### Deploy to Server
 ```bash
 # 1. Upload archive
-scp dist/new-api-<version>.tar.gz root@8.154.37.125:~/
+scp dist/new-api-<version>.tar.gz lance@43.133.252.108:~/
 
 # 2. On server, extract and update
-ssh root@8.154.37.125
+ssh lance@43.133.252.108
 mkdir -p ~/new-api && tar xzf new-api-*.tar.gz -C ~/new-api
 cd ~/new-api && ./manage.sh update   # Preserves all user data (DB, configs, uploads)
 ```
@@ -198,6 +198,7 @@ cd ~/new-api && ./manage.sh update   # Preserves all user data (DB, configs, upl
 ## User-Defined Rules
 
 ### Auto Push After Release
+
 After each version release (bumping VERSION + building), automatically:
 ```bash
 git add -A
@@ -206,8 +207,9 @@ git push origin main
 ```
 
 ### Protected Information
+
 - **new-api** (project name) and **QuantumNous** (author) references are protected — do NOT modify or delete unless explicitly instructed
 
 ### Server Credentials
-- Build server: `8.154.37.125` (user: `root`, password in memory)
-- Production: `43.133.252.108` (user: `root`, password in memory)
+
+- Production: `43.133.252.108` (user: `lance`, password is “ ”)

@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Typography,
@@ -40,6 +40,28 @@ import {
 } from '@douyinfe/semi-icons';
 import { Link } from 'react-router-dom';
 import NoticeModal from '../../components/layout/NoticeModal';
+import {
+  Moonshot,
+  OpenAI,
+  XAI,
+  Zhipu,
+  Volcengine,
+  Cohere,
+  Claude,
+  Gemini,
+  Suno,
+  Minimax,
+  Wenxin,
+  Spark,
+  Qingyan,
+  DeepSeek,
+  Qwen,
+  Midjourney,
+  Grok,
+  AzureAI,
+  Hunyuan,
+  Xinference,
+} from '@lobehub/icons';
 
 const { Text } = Typography;
 
@@ -58,65 +80,6 @@ const Home = () => {
   const endpointItems = API_ENDPOINTS.map((e) => ({ value: e }));
   const [endpointIndex, setEndpointIndex] = useState(0);
   const isChinese = i18n.language.startsWith('zh');
-  const canvasRef = useRef(null);
-  const ripplesRef = useRef([]);
-  const animFrameRef = useRef(null);
-
-  // Mouse ripple effect
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    let running = true;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const handleMouseMove = (e) => {
-      ripplesRef.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        r: 0,
-        opacity: 0.5,
-        createdAt: Date.now(),
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const animate = () => {
-      if (!running) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const now = Date.now();
-      ripplesRef.current = ripplesRef.current.filter((rip) => {
-        const age = now - rip.createdAt;
-        if (age > 1500) return false;
-        rip.r = age * 0.12;
-        rip.opacity = 0.5 * (1 - age / 1500);
-        ctx.beginPath();
-        ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(99, 179, 237, ${rip.opacity})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        return true;
-      });
-
-      animFrameRef.current = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      running = false;
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-    };
-  }, []);
 
   const displayHomePageContent = async () => {
     setHomePageContent(localStorage.getItem('home_page_content') || '');
@@ -130,6 +93,7 @@ const Home = () => {
       setHomePageContent(content);
       localStorage.setItem('home_page_content', content);
 
+      // 如果内容是 URL，则发送主题模式
       if (data.startsWith('https://')) {
         const iframe = document.querySelector('iframe');
         if (iframe) {
@@ -141,7 +105,7 @@ const Home = () => {
       }
     } else {
       showError(message);
-      setHomePageContent(t('加载首页内容失败...'));
+      setHomePageContent('加载首页内容失败...');
     }
     setHomePageContentLoaded(true);
   };
@@ -186,11 +150,6 @@ const Home = () => {
 
   return (
     <div className='w-full overflow-x-hidden'>
-      <canvas
-        ref={canvasRef}
-        className='pointer-events-none'
-        style={{ position: 'fixed', inset: 0, zIndex: 9999 }}
-      />
       <NoticeModal
         visible={noticeVisible}
         onClose={() => setNoticeVisible(false)}
@@ -198,10 +157,13 @@ const Home = () => {
       />
       {homePageContentLoaded && homePageContent === '' ? (
         <div className='w-full overflow-x-hidden'>
+          {/* Banner 部分 */}
           <div className='w-full border-b border-semi-color-border min-h-[500px] md:min-h-[600px] lg:min-h-[700px] relative overflow-x-hidden'>
+            {/* 背景模糊晕染球 */}
             <div className='blur-ball blur-ball-indigo' />
             <div className='blur-ball blur-ball-teal' />
             <div className='flex items-center justify-center h-full px-4 py-20 md:py-24 lg:py-32 mt-10'>
+              {/* 居中内容区 */}
               <div className='flex flex-col items-center justify-center text-center max-w-4xl mx-auto'>
                 <div className='flex flex-col items-center justify-center mb-6 md:mb-8'>
                   <h1
@@ -214,8 +176,9 @@ const Home = () => {
                     </>
                   </h1>
                   <p className='text-base md:text-lg lg:text-xl text-semi-color-text-1 mt-4 md:mt-6 max-w-xl'>
-                    {t('更好的价格，更好的稳定性，只需要将模型基址替换为：')}
+                    {t('多模型统一接入，只需将基址替换为：')}
                   </p>
+                  {/* BASE URL 与端点选择 */}
                   <div className='flex flex-col md:flex-row items-center justify-center gap-4 w-full mt-4 md:mt-6 max-w-md'>
                     <Input
                       readonly
@@ -248,6 +211,7 @@ const Home = () => {
                   </div>
                 </div>
 
+                {/* 操作按钮 */}
                 <div className='flex flex-row gap-4 justify-center items-center'>
                   <Link to='/console'>
                     <Button
@@ -267,7 +231,7 @@ const Home = () => {
                       icon={<IconGithubLogo />}
                       onClick={() =>
                         window.open(
-                          'https://github.com/QuantumNous/cheap-api',
+                          'https://github.com/QuantumNous/new-api',
                           '_blank',
                         )
                       }
@@ -286,6 +250,85 @@ const Home = () => {
                       </Button>
                     )
                   )}
+                </div>
+
+                {/* 框架兼容性图标 */}
+                <div className='mt-12 md:mt-16 lg:mt-20 w-full'>
+                  <div className='flex items-center mb-6 md:mb-8 justify-center'>
+                    <Text
+                      type='tertiary'
+                      className='text-lg md:text-xl lg:text-2xl font-light'
+                    >
+                      {t('支持众多的大模型供应商')}
+                    </Text>
+                  </div>
+                  <div className='flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto px-4'>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Moonshot size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <OpenAI size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <XAI size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Zhipu.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Volcengine.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Cohere.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Claude.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Gemini.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Suno size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Minimax.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Wenxin.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Spark.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Qingyan.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <DeepSeek.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Qwen.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Midjourney size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Grok size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <AzureAI.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Hunyuan.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Xinference.Color size={40} />
+                    </div>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
+                      <Typography.Text className='!text-lg sm:!text-xl md:!text-2xl lg:!text-3xl font-bold'>
+                        30+
+                      </Typography.Text>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

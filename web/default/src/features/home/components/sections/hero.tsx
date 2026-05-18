@@ -1,3 +1,21 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import { Link } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -37,19 +55,17 @@ export function Hero(props: HeroProps) {
           className='landing-animate-fade-up text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.15] font-bold tracking-tight'
           style={{ animationDelay: '0ms' }}
         >
-          {t('Most Trusted API Platform')}
+          {t('Unified API Gateway for')}
           <br />
           <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
-            {t('We Promise Quality')}
+            {t('All Your AI Models')}
           </span>
         </h1>
         <p
           className='landing-animate-fade-up text-muted-foreground/80 mt-5 max-w-lg text-base leading-relaxed opacity-0 md:text-lg'
           style={{ animationDelay: '80ms' }}
         >
-          {t(
-            'No diluted models. No privacy interception. Reliable and secure experience at fair prices.'
-          )}
+          {t('Power AI applications, manage digital assets, connect the Future')}
         </p>
         <div
           className='landing-animate-fade-up mt-8 flex items-center gap-3 opacity-0'
